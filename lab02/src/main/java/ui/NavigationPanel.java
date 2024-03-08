@@ -1,23 +1,52 @@
 package ui;
 
+import data.DataLoader;
+import data.MeasurementCache;
+import factories.DataModelFactory;
+import model.FileNode;
+
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
+import java.io.File;
 
 public class NavigationPanel extends JPanel {
-    private JTree tree;
+    private final JTree tree;
 
-    public NavigationPanel() {
+    public NavigationPanel(String rootFolderPath, DataDisplayPanel dataDisplayPanel, DataLoader dataLoader, DataModelFactory factory) {
         setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(200, 600));
+        MeasurementCache cache = new MeasurementCache();
+        File rootFolder = new File(rootFolderPath);
+        DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(rootFolder);
+        createTree(rootNode, rootFolder);
 
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Measurement Data");
-        DefaultMutableTreeNode campaign1 = new DefaultMutableTreeNode("07.03.2023");
-        root.add(campaign1);
-        campaign1.add(new DefaultMutableTreeNode("0001_10:00"));
-        campaign1.add(new DefaultMutableTreeNode("0002_11:00"));
+        tree = new JTree(rootNode);
+        tree.addTreeSelectionListener(e -> {
+            DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+            if (selectedNode != null) {
+                Object userObject = selectedNode.getUserObject();
+                if (userObject instanceof FileNode) {
+                    File selectedFile = ((FileNode) userObject).getFile();
+                    if (selectedFile.isFile()) {
+                        dataDisplayPanel.updateDataPreview(selectedFile.getAbsolutePath(), dataLoader, factory, cache);
+                    }
+                }
+            }
+        });
 
-        tree = new JTree(root);
         add(new JScrollPane(tree), BorderLayout.CENTER);
+    }
+
+    private void createTree(DefaultMutableTreeNode node, File folder) {
+        File[] files = folder.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(new FileNode(file));
+                node.add(childNode);
+                if (file.isDirectory()) {
+                    createTree(childNode, file);
+                }
+            }
+        }
     }
 }
