@@ -23,10 +23,6 @@ public class CSVMeasurement implements DataModel {
         };
     }
 
-    public String getTime() {
-        return time;
-    }
-
     public double getPressure() {
         return pressure;
     }

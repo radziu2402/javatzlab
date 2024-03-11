@@ -27,7 +27,7 @@ public class NavigationPanel extends JPanel {
             if (selectedNode != null) {
                 Object userObject = selectedNode.getUserObject();
                 if (userObject instanceof FileNode) {
-                    File selectedFile = ((FileNode) userObject).getFile();
+                    File selectedFile = ((FileNode) userObject).file();
                     if (selectedFile.isFile()) {
                         dataDisplayPanel.updateDataPreview(selectedFile.getAbsolutePath(), dataLoader, factory, cache);
                     }
