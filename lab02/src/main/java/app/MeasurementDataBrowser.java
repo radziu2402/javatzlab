@@ -19,7 +19,7 @@ public class MeasurementDataBrowser extends JFrame {
         setLocationRelativeTo(null);
         DataDisplayPanel dataDisplayPanel = new DataDisplayPanel(new CSVDataModelDescriptor(), new CSVStatisticsCalculator());
 
-        NavigationPanel navigationPanel = new NavigationPanel("C:\\Users\\radziu2402\\Desktop\\PLIKI POMIAROWE"
+        NavigationPanel navigationPanel = new NavigationPanel("C:\\Users\\radzi\\Desktop\\PLIKI POMIAROWE"
                 , dataDisplayPanel
                 , new CSVDataLoader()
                 , new CSVDataModelFactory());
