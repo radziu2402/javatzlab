@@ -1,7 +1,7 @@
-package app;
+package pl.pwr.main;
 
 
-import ui.TaskProcessorGUI;
+import pl.pwr.ui.TaskProcessorGUI;
 
 import javax.swing.*;
 

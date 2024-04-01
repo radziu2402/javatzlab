@@ -1,4 +1,4 @@
-package reflection;
+package pl.pwr.reflection;
 
 public class ClassInfo {
     private final String className;

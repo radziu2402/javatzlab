@@ -1,8 +1,8 @@
-package ui;
+package pl.pwr.ui;
 
 import processing.StatusListener;
-import reflection.ClassInfo;
-import reflection.CustomClassLoader;
+import pl.pwr.reflection.ClassInfo;
+import pl.pwr.reflection.CustomClassLoader;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,6 +42,19 @@ public class TaskProcessorGUI extends JFrame {
         resultArea.setEditable(false);
         JScrollPane resultScrollPane = new JScrollPane(resultArea);
 
+        JPanel topPanel = getjPanel();
+
+        add(topPanel, BorderLayout.NORTH);
+        add(listScrollPane, BorderLayout.WEST);
+        add(resultScrollPane, BorderLayout.CENTER);
+        add(taskField, BorderLayout.SOUTH);
+
+
+        setSize(800, 600);
+        setLocationRelativeTo(null);
+    }
+
+    private JPanel getjPanel() {
         JButton loadClassButton = new JButton("Load Class");
         loadClassButton.addActionListener(e -> loadClass());
 
@@ -51,18 +64,16 @@ public class TaskProcessorGUI extends JFrame {
         JButton unloadClassButton = new JButton("Unload Class");
         unloadClassButton.addActionListener(e -> unloadClass());
 
+        JButton cleanButton = new JButton("Clear Results");
+        cleanButton.addActionListener(e -> resultArea.setText(""));
+
+
         JPanel topPanel = new JPanel(new GridLayout(1, 3));
         topPanel.add(loadClassButton);
         topPanel.add(submitTaskButton);
         topPanel.add(unloadClassButton);
-
-        add(topPanel, BorderLayout.NORTH);
-        add(listScrollPane, BorderLayout.WEST);
-        add(resultScrollPane, BorderLayout.CENTER);
-        add(taskField, BorderLayout.SOUTH);
-
-        setSize(800, 600);
-        setLocationRelativeTo(null);
+        topPanel.add(cleanButton);
+        return topPanel;
     }
 
     private void loadClass() {
@@ -101,20 +112,18 @@ public class TaskProcessorGUI extends JFrame {
                     }
                     Object instance = classInstances.get(className);
                     Method submitTaskMethod = cls.getMethod("submitTask", String.class, StatusListener.class);
-                    submitTaskMethod.invoke(instance, task, (StatusListener) status -> {
-                        SwingUtilities.invokeLater(() -> {
-                            resultArea.append("Status: " + status.getProgress() + "%\n");
-                            if (status.getProgress() == 100) {
-                                try {
-                                    Method getResultMethod = instance.getClass().getMethod("getResult");
-                                    String result = (String) getResultMethod.invoke(instance);
-                                    resultArea.append("Result: " + result + "\n\n");
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
+                    submitTaskMethod.invoke(instance, task, (StatusListener) status -> SwingUtilities.invokeLater(() -> {
+                        resultArea.append("Status: " + status.getProgress() + "%\n");
+                        if (status.getProgress() == 100) {
+                            try {
+                                Method getResultMethod = instance.getClass().getMethod("getResult");
+                                String result = (String) getResultMethod.invoke(instance);
+                                resultArea.append("Result: " + result + "\n\n");
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-                        });
-                    });
+                        }
+                    }));
                 } catch (Exception ex) {
                     SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(this, "Error executing task: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE));
                 }

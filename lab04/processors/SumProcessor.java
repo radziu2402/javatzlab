@@ -1,5 +1,3 @@
-package external;
-
 import processing.Processor;
 import processing.Status;
 import processing.StatusListener;
@@ -17,7 +15,7 @@ public class SumProcessor implements Processor {
                 for (int i = 0; i < totalParts; i++) {
                     sum += Integer.parseInt(parts[i].trim());
                     int progress = (int) (((i + 1) / (float) totalParts) * 100);
-                    Thread.sleep(1000);
+                    Thread.sleep(700);
                     sl.statusChanged(new Status(1, progress));
                 }
                 this.result = Integer.toString(sum);
