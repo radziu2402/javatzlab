@@ -1,0 +1,5 @@
+Record,Name,Value,Result,Type of result
+1,TP,279,Positive,True
+2,TN,1487,Negative,True
+3,FP,93,Positive,False
+4,FN,542,Negative,False
