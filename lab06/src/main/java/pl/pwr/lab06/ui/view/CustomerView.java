@@ -3,6 +3,7 @@ package pl.pwr.lab06.ui.view;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.Grid.Column;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -26,10 +27,17 @@ public class CustomerView extends VerticalLayout {
     public CustomerView(CustomerService customerService) {
         this.customerService = customerService;
         addNewBtn.addClickListener(e -> editCustomer(new Customer()));
+        configureGrid();
         add(addNewBtn, grid);
-        grid.setColumns("firstName", "lastName", "customerNumber");
-        grid.asSingleSelect().addValueChangeListener(e -> editCustomer(e.getValue()));
         updateList();
+    }
+
+    private void configureGrid() {
+        grid.removeAllColumns();
+        Column<Customer> firstNameCol = grid.addColumn(Customer::getFirstName).setHeader("Imię");
+        Column<Customer> lastNameCol = grid.addColumn(Customer::getLastName).setHeader("Nazwisko");
+        Column<Customer> customerNumberCol = grid.addColumn(Customer::getCustomerNumber).setHeader("Numer klienta");
+        grid.asSingleSelect().addValueChangeListener(e -> editCustomer(e.getValue()));
     }
 
     private void updateList() {
@@ -70,7 +78,8 @@ public class CustomerView extends VerticalLayout {
             confirmDialog.add(confirmButton, cancelButton);
             confirmDialog.open();
         });
-        dialog.add(firstName, lastName, customerNumber, save, delete);
+        Button cancelButton = new Button("Anuluj", e -> dialog.close());
+        dialog.add(firstName, lastName, customerNumber, save, delete, cancelButton);
         dialog.open();
     }
 }

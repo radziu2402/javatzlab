@@ -1,10 +1,8 @@
 package pl.pwr.lab06.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -13,7 +11,8 @@ public class Charge {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDate paymentDueDate;
-    private Double amountDue;
+    private BigDecimal amountDue;
+    private boolean paid = false;
 
     @ManyToOne
     private Installation installation;
@@ -21,7 +20,7 @@ public class Charge {
     public Charge() {
     }
 
-    public Charge(LocalDate paymentDueDate, Double amountDue, Installation installation) {
+    public Charge(LocalDate paymentDueDate, BigDecimal amountDue, Installation installation) {
         this.paymentDueDate = paymentDueDate;
         this.amountDue = amountDue;
         this.installation = installation;
@@ -39,11 +38,11 @@ public class Charge {
         this.paymentDueDate = paymentDueDate;
     }
 
-    public Double getAmountDue() {
+    public BigDecimal getAmountDue() {
         return amountDue;
     }
 
-    public void setAmountDue(Double amountDue) {
+    public void setAmountDue(BigDecimal amountDue) {
         this.amountDue = amountDue;
     }
 
@@ -54,5 +53,12 @@ public class Charge {
     public void setInstallation(Installation installation) {
         this.installation = installation;
     }
-}
 
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
+}

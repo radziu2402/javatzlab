@@ -14,7 +14,8 @@ public class Installation {
     private Address address;
 
     private String routerNumber;
-    private String serviceType;
+    @ManyToOne
+    private PriceList serviceType;
 
     @ManyToOne
     private Customer customer;
@@ -26,15 +27,6 @@ public class Installation {
     private Set<Payment> payments;
 
     public Installation() {
-    }
-
-    public Installation(Address address, String routerNumber, String serviceType, Customer customer, Set<Charge> charges, Set<Payment> payments) {
-        this.address = address;
-        this.routerNumber = routerNumber;
-        this.serviceType = serviceType;
-        this.customer = customer;
-        this.charges = charges;
-        this.payments = payments;
     }
 
     public Long getId() {
@@ -57,11 +49,11 @@ public class Installation {
         this.routerNumber = routerNumber;
     }
 
-    public String getServiceType() {
+    public PriceList getServiceType() {
         return serviceType;
     }
 
-    public void setServiceType(String serviceType) {
+    public void setServiceType(PriceList serviceType) {
         this.serviceType = serviceType;
     }
 

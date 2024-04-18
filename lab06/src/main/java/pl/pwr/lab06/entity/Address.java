@@ -1,10 +1,6 @@
 package pl.pwr.lab06.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 @Entity
 public class Address {
@@ -18,14 +14,6 @@ public class Address {
 
     @OneToOne(mappedBy = "address")
     private Installation installation;
-
-    public Address(String street, String city, String postalCode, String country, Installation installation) {
-        this.street = street;
-        this.city = city;
-        this.postalCode = postalCode;
-        this.country = country;
-        this.installation = installation;
-    }
 
     public Address() {
     }

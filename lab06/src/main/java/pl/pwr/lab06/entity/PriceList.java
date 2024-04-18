@@ -5,20 +5,26 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.math.BigDecimal;
+
 @Entity
 public class PriceList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String serviceType;
-    private Double price;
+    private BigDecimal price;
 
     public PriceList() {
     }
 
-    public PriceList(String serviceType, Double price) {
+    public PriceList(String serviceType, BigDecimal price) {
         this.serviceType = serviceType;
         this.price = price;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getServiceType() {
@@ -29,11 +35,11 @@ public class PriceList {
         this.serviceType = serviceType;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 }
