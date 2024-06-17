@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?language javascript?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+
+<VBox fx:controller="pl.pwr.gui.Controller"
+      xmlns:fx="http://javafx.com/fxml" alignment="center" spacing="10">
+    <HBox spacing="10" alignment="center">
+        <Button fx:id="loadButton" text="Załaduj skrypt" onMouseClicked="#loadJavascript" />
+        <Button fx:id="unloadButton" text="Wyładuj skrypt" onMouseClicked="#unloadJavascript" />
+    </HBox>
+    <Canvas fx:id="canvas" height="800" width="1200" onMousePressed="#mousePressed" onMouseReleased="#mouseReleased" onMouseDragged="#colour"/>
+</VBox>

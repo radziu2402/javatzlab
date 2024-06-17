@@ -1,0 +1,31 @@
+.root {
+    -fx-background-color: #282c34;
+    -fx-transition: background-color 0.5s ease-in-out;
+}
+
+.label {
+    -fx-font-size: 16;
+    -fx-font-family: "Consolas";
+    -fx-text-fill: #e2e2e2;
+    -fx-alignment: center;
+    -fx-transition: text-fill 0.5s ease-in-out;
+}
+
+.label:hover {
+    -fx-text-fill: #b3b3b3;
+}
+
+.button {
+    -fx-font-size: 14;
+    -fx-font-family: "Consolas";
+    -fx-text-fill: #ffffff;
+    -fx-alignment: center;
+    -fx-background-color: #4a688c;
+    -fx-border-color: #404040;
+    -fx-transition: background-color 0.5s ease-in-out, text-fill 0.5s ease-in-out;
+}
+
+.button:hover {
+    -fx-background-color: #668ab8;
+    -fx-text-fill: #0d0d0d;
+}
