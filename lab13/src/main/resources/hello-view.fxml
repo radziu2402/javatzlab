@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?language javascript?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" alignment="TOP_CENTER"
+      maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
+      prefWidth="608.0">
+    <children>
+        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="608.0"
+               text="Generator Życzeń"/>
+        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0"
+               prefWidth="608.0" text="Wybierz szablon:"/>
+        <ListView fx:id="templateListView" prefHeight="100.0" prefWidth="608.0"/>
+        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0"
+               prefWidth="608.0" text="Imię:"/>
+        <TextField fx:id="nameField" alignment="CENTER" prefHeight="30.0" prefWidth="608.0"
+                   promptText="Wpisz swoje imię"/>
+        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0"
+               prefWidth="608.0" text="Data:"/>
+        <DatePicker fx:id="datePicker" prefWidth="608.0"/>
+        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0"
+               prefWidth="608.0" text="Dodatkowa wiadomość:"/>
+        <TextArea fx:id="entryTextArea" prefHeight="80.0" prefWidth="608.0"/>
+        <Button fx:id="generateButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="Wygeneruj życzenie"
+                onAction="generateEntry()"/>
+        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="608.0" text="Twoje życzenie"/>
+        <TextArea fx:id="diaryTextArea" editable="false" prefHeight="200.0" prefWidth="608.0" wrapText="true"/>
+    </children>
+    <fx:script><![CDATA[
+        var Files = Java.type('java.nio.file.Files');
+        var Paths = Java.type('java.nio.file.Paths');
+
+        function initialize() {
+            var dir = Paths.get('./templates');
+            try {
+                Files.list(dir).forEach(function(file) {
+                    if (file.toString().endsWith('.json')) {
+                        var fileName = file.getFileName().toString();
+                        var templateName = fileName.substring(0, fileName.length() - 5); // Usuwamy rozszerzenie .json
+                        templateListView.getItems().add(templateName);
+                    }
+                });
+            } catch (e) {
+                java.lang.System.out.println('Błąd podczas ładowania szablonów: ' + e);
+            }
+            if (!templateListView.getItems().isEmpty()) {
+                templateListView.getSelectionModel().selectFirst();
+            }
+        }
+
+        initialize();
+
+        function generateEntry() {
+            var templateName = templateListView.getSelectionModel().getSelectedItem();
+            var name = nameField.getText();
+            var date = datePicker.getValue();
+
+            if (!name || !date) {
+                entryTextArea.setText("Proszę podać wszystkie wymagane informacje.");
+                return;
+            }
+
+            var formattedDate = date.format(java.time.format.DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+            var formattedTemplateName = templateName.toLowerCase().replace(' ', '');
+            var template = loadTemplate(formattedTemplateName);
+            if (template) {
+                var entry = template.replace('{name}', name).replace('{date}', formattedDate);
+                diaryTextArea.setText(entry + '\n\n' + entryTextArea.getText());
+            }
+        }
+
+        function loadTemplate(templateName) {
+            var templatePath = Paths.get('./templates/' + templateName + '.json');
+            if (Files.exists(templatePath)) {
+                var data = new java.lang.String(Files.readAllBytes(templatePath), java.nio.charset.StandardCharsets.UTF_8);
+                var json = JSON.parse(data);
+                return json.template;
+            } else {
+                java.lang.System.out.println('Nie znaleziono pliku szablonu: ' + templateName);
+                return null;
+            }
+        }
+        ]]></fx:script>
+</VBox>

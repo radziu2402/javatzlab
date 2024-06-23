@@ -1,0 +1,29 @@
+.root {
+    -fx-background-color: #282c34; /* Ciemnoszary tło */
+}
+
+.label {
+    -fx-font-size: 16; /* Nieco większy rozmiar czcionki */
+    -fx-font-family: "Arial"; /* Zmiana czcionki na bardziej uniwersalną */
+    -fx-text-fill: #ffffff; /* Jasny kolor tekstu */
+    -fx-alignment: center;
+}
+
+.label:hover {
+    -fx-text-fill: #bbbbbb; /* Jaśniejszy szary kolor tekstu przy najechaniu */
+}
+
+.button {
+    -fx-font-size: 14; /* Zwiększony rozmiar czcionki dla lepszej czytelności */
+    -fx-font-family: "Arial"; /* Zmiana czcionki na bardziej uniwersalną */
+    -fx-text-fill: #ffffff; /* Jasny kolor tekstu */
+    -fx-alignment: center;
+    -fx-background-color: #556677; /* Niebieskoszary kolor tła */
+    -fx-border-color: #2c2f33; /* Ciemniejsza obwódka */
+    -fx-transition: background-color 0.5s ease-in-out, text-fill 0.5s ease-in-out; /* Łagodniejsze przejście */
+}
+
+.button:hover {
+    -fx-background-color: #778899; /* Jaśniejszy niebieskoszary kolor przy najechaniu */
+    -fx-text-fill: #000000; /* Czarny tekst przy najechaniu */
+}
